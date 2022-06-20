@@ -1,0 +1,346 @@
+<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="content">
+  <div class="content-inside">
+    <div class="my-4">
+      <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a style="background-color: #2E9AFE;color: white" class="nav-link active" id="home-tab" data-toggle="tab"
+            role="tab" aria-controls="home" aria-selected="false"><b>Rollouts - Florianópolis - 
+              <?php if( totalRolloutsFlr() == 0 ){ ?>
+              Nenhum Registrado
+              <?php }elseif( totalRolloutsFlr() == 1 ){ ?>
+              <?php echo totalRolloutsFlr(); ?> Registrado
+              <?php }else{ ?>
+              <?php echo totalRolloutsFlr(); ?> Registrados
+              <?php } ?> </b></a>
+
+        </li>
+
+      </ul>
+
+      <?php if( $usuario["localidade"] =='Florianópolis' ){ ?>      
+
+       <a style="width: 15%;" href="/usuario/registrar-rollout-flr"class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true"></i><b> Registrar Rollout</b></a>
+
+    
+         <a style="width: 15%;" href="/usuario/meus-rollouts-flr"class="btn btn-success btn-sm"><i class="fa fa-server" aria-hidden="true"></i></i><b> Meus Rollouts</b></a>
+       <?php } ?>
+     
+   <?php if( totalRolloutsFlr() != 0 ){ ?>
+      <div class="search" style="float: right">
+        <form action="/usuario/todos-rollouts-flr" method="get">
+          <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Digite sua pesquisa...">
+            <span class="input-group-btn">
+              <button class="btn btn" style="background-color: #2E9AFE;color: white" type="submit" id="search-btn"><i
+                  class="fa fa-search" style="font-size:13px;"> PESQUISAR</i>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div><br><br>
+
+       <?php if( $profileMsg != '' ){ ?>
+      <div class="alert alert-success">
+        <b><?php echo $profileMsg; ?></b>
+      </div>
+      <?php } ?>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-sm  table-bordered">
+          <thead class="table table-dark">
+            <tr style="font-size: 16px; font-weight: bold; ">
+
+
+
+
+
+              <th>
+                <center>Analista<b>
+              </th>
+
+              <th>
+                <center>N° Chamado<b>
+              </th>
+              <th>
+                <center>Colaborador(a)<b>
+              </th>
+              <th>
+                <center>Entrega
+              </th>
+              <th>
+                <center>Anexo(s)
+              </th>
+              <th>
+                <center>Situação
+              </th>
+              <th>
+                <center>Visualizar
+              </th>
+
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <?php $counter1=-1;  if( isset($rollouts) && ( is_array($rollouts) || $rollouts instanceof Traversable ) && sizeof($rollouts) ) foreach( $rollouts as $key1 => $value1 ){ $counter1++; ?>
+            <tr style="font-size: 15px;font-weight: normal;">
+
+
+              <td><br>
+                <center><?php echo $value1["nome_user"]; ?>
+              </td>
+
+              <td><br>
+                <center><?php echo $value1["n_chamado"]; ?>
+              </td>
+              <td><br>
+                <center><?php echo $value1["nome"]; ?>
+              </td>
+
+
+
+              <td><br>
+                <center><?php echo formatDate($value1["dt_data_rollout"]); ?>
+              </td>
+
+              <td><br>
+                <center> <a style="width: 100%;" href="/usuario/meus-rollouts/arquivos-flr/<?php echo $value1["id_rollout"]; ?>"
+                    class="btn btn-warning btn-sm">
+                    <i class="far fa-file-alt"></i>
+                    <?php if( numArquivos($value1["id_rollout"]) == 1 ){ ?>
+                    <b><?php echo numArquivos($value1["id_rollout"]); ?> Arquivo</b></a>
+                  <?php }else{ ?>
+                  <b><?php echo numArquivos($value1["id_rollout"]); ?> Arquivos</b></a>
+                  <?php } ?>
+              </td>
+
+              <?php if( $value1["situacao"] == '' OR $value1["situacao"] == 'Pendente'  ){ ?>
+
+              <td><br>
+                <center>
+                  <i style="color:red;" class="fas fa-exclamation-triangle"></i><b style="color:red"> Pendente</b>
+              </td>
+
+              <?php }else{ ?>
+              <td><br>
+                <center>
+                  <center>
+                    <i style="color:green;" class="fas fa-check-square"></i> <b style="color:green"> Finalizado</b>
+              </td>
+
+              <?php } ?>
+              <td><br>
+                <center> <a style="width: 100%;" href="/usuario/rollout-visualizar-flr/<?php echo $value1["id_rollout"]; ?>"
+                    class="btn btn-primary btn-sm"><i class="fas fa-eye"></i><b> Verificar</b></a>
+              </td>
+
+
+            </tr>
+
+            <?php } ?>
+
+          </tbody>
+
+        </table><br>
+
+      </div>
+
+
+
+      <center>
+        <div class="box-footer clearfix">
+          <ul class="pagination">
+            <?php $counter1=-1;  if( isset($pages) && ( is_array($pages) || $pages instanceof Traversable ) && sizeof($pages) ) foreach( $pages as $key1 => $value1 ){ $counter1++; ?>
+            <?php if( $pages == $value1["link"] ){ ?>
+            <li> <a class="active" href="<?php echo $value1["link"]; ?>"><?php echo $value1["page"]; ?></a></li>
+            <?php }else{ ?>
+            <li><a href="<?php echo $value1["link"]; ?>"><?php echo $value1["page"]; ?></a></li>
+            <?php } ?>
+            <?php } ?>
+        </div>
+      </center>
+
+      <?php } ?>
+      <br><br><a href="javascript:history.back()" class="btn btn-info btn-xs"><i class="fas fa-chevron-circle-left"></i><b>
+          Voltar</b></a>
+
+
+      <hr class="my-4" />
+
+    </div>
+
+
+  </div>
+
+</div><div class="content">
+  <div class="content-inside">
+    <div class="my-4">
+      <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a style="background-color: #2E9AFE;color: white" class="nav-link active" id="home-tab" data-toggle="tab"
+            role="tab" aria-controls="home" aria-selected="false"><b>Todos Rollouts - Rio de Janeiro - 
+              <?php if( totalRolloutsflr() == 0 ){ ?>
+              Nenhum Registrado
+              <?php }elseif( totalRolloutsflr() == 1 ){ ?>
+              <?php echo totalRolloutsflr(); ?> Registrado
+              <?php }else{ ?>
+              <?php echo totalRolloutsflr(); ?> Registrados
+              <?php } ?> </b></a>
+
+        </li>
+
+      </ul>
+
+       <a style="width: 15%;" href="/usuario/registrar-rollout-flr"class="btn btn-primary btn-sm"><i class="fa fa-plus-circle" aria-hidden="true"></i><b> Registrar Rollout</b></a>
+
+      <?php if( totalRolloutsflr() != 0 ){ ?>
+         <a style="width: 15%;" href="/usuario/meus-rollouts-flr"class="btn btn-success btn-sm"><i class="fa fa-server" aria-hidden="true"></i></i><b> Meus Rollouts</b></a>
+     
+  
+      <div class="search" style="float: right">
+        <form action="/usuario/todos-rollouts-flr" method="get">
+          <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Digite sua pesquisa...">
+            <span class="input-group-btn">
+              <button class="btn btn" style="background-color: #2E9AFE;color: white" type="submit" id="search-btn"><i
+                  class="fa fa-search" style="font-size:13px;"> PESQUISAR</i>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div><br><br>
+
+       <?php if( $profileMsg != '' ){ ?>
+      <div class="alert alert-success">
+        <b><?php echo $profileMsg; ?></b>
+      </div>
+      <?php } ?>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-sm  table-bordered">
+          <thead class="table table-dark">
+            <tr style="font-size: 16px; font-weight: bold; ">
+
+
+
+
+
+              <th>
+                <center>Analista<b>
+              </th>
+
+              <th>
+                <center>N° Chamado<b>
+              </th>
+              <th>
+                <center>Colaborador(a)<b>
+              </th>
+              <th>
+                <center>Entrega
+              </th>
+              <th>
+                <center>Anexo(s)
+              </th>
+              <th>
+                <center>Situação
+              </th>
+              <th>
+                <center>Visualizar
+              </th>
+
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <?php $counter1=-1;  if( isset($rollouts) && ( is_array($rollouts) || $rollouts instanceof Traversable ) && sizeof($rollouts) ) foreach( $rollouts as $key1 => $value1 ){ $counter1++; ?>
+            <tr style="font-size: 15px;font-weight: normal;">
+
+
+              <td><br>
+                <center><?php echo $value1["nome_user"]; ?>
+              </td>
+
+              <td><br>
+                <center><?php echo $value1["n_chamado"]; ?>
+              </td>
+              <td><br>
+                <center><?php echo $value1["nome"]; ?>
+              </td>
+
+
+
+              <td><br>
+                <center><?php echo formatDate($value1["dt_data_rollout"]); ?>
+              </td>
+
+              <td><br>
+                <center> <a style="width: 100%;" href="/usuario/meus-rollouts/arquivos-flr/<?php echo $value1["id_rollout"]; ?>"
+                    class="btn btn-warning btn-sm">
+                    <i class="far fa-file-alt"></i>
+                    <?php if( numArquivos($value1["id_rollout"]) == 1 ){ ?>
+                    <b><?php echo numArquivos($value1["id_rollout"]); ?> Arquivo</b></a>
+                  <?php }else{ ?>
+                  <b><?php echo numArquivos($value1["id_rollout"]); ?> Arquivos</b></a>
+                  <?php } ?>
+              </td>
+
+              <?php if( $value1["situacao"] == '' OR $value1["situacao"] == 'Pendente'  ){ ?>
+
+              <td><br>
+                <center>
+                  <i style="color:red;" class="fas fa-exclamation-triangle"></i><b style="color:red"> Pendente</b>
+              </td>
+
+              <?php }else{ ?>
+              <td><br>
+                <center>
+                  <center>
+                    <i style="color:green;" class="fas fa-check-square"></i> <b style="color:green"> Finalizado</b>
+              </td>
+
+              <?php } ?>
+              <td><br>
+                <center> <a style="width: 100%;" href="/usuario/rollout-visualizar-flr/<?php echo $value1["id_rollout"]; ?>"
+                    class="btn btn-primary btn-sm"><i class="fas fa-eye"></i><b> Verificar</b></a>
+              </td>
+
+
+            </tr>
+
+            <?php } ?>
+
+          </tbody>
+
+        </table><br>
+
+      </div>
+
+
+
+      <center>
+        <div class="box-footer clearfix">
+          <ul class="pagination">
+            <?php $counter1=-1;  if( isset($pages) && ( is_array($pages) || $pages instanceof Traversable ) && sizeof($pages) ) foreach( $pages as $key1 => $value1 ){ $counter1++; ?>
+            <?php if( $pages == $value1["link"] ){ ?>
+            <li> <a class="active" href="<?php echo $value1["link"]; ?>"><?php echo $value1["page"]; ?></a></li>
+            <?php }else{ ?>
+            <li><a href="<?php echo $value1["link"]; ?>"><?php echo $value1["page"]; ?></a></li>
+            <?php } ?>
+            <?php } ?>
+        </div>
+      </center>
+
+      <?php } ?>
+      <br><br><a href="javascript:history.back()" class="btn btn-info btn-xs"><i class="fas fa-chevron-circle-left"></i><b>
+          Voltar</b></a>
+
+
+      <hr class="my-4" />
+
+    </div>
+
+
+  </div>
+
+</div>
