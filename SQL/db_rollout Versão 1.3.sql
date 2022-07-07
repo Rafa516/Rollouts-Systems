@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 20-Jun-2022 às 05:12
+-- Tempo de geração: 07-Jul-2022 às 18:05
 -- Versão do servidor: 10.4.21-MariaDB
 -- versão do PHP: 8.0.12
 
@@ -361,6 +361,16 @@ BEGIN
     
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_userspasswordsrecoveries_create` (`pid_usuario` INT, `pdesip` VARCHAR(45))  BEGIN
+	
+	INSERT INTO tb_userspasswordsrecoveries (id_usuario, desip)
+    VALUES(pid_usuario, pdesip);
+    
+    SELECT * FROM tb_userspasswordsrecoveries WHERE idrecovery = LAST_INSERT_ID();
+    
+    
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -506,6 +516,20 @@ CREATE TABLE `tb_termos` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `tb_userspasswordsrecoveries`
+--
+
+CREATE TABLE `tb_userspasswordsrecoveries` (
+  `idrecovery` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `desip` varchar(45) NOT NULL,
+  `dtrecovery` datetime DEFAULT NULL,
+  `dtregister` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `tb_usuarios`
 --
 
@@ -565,6 +589,13 @@ ALTER TABLE `tb_termos`
   ADD KEY `fk_termos_usuarios` (`id_usuario`);
 
 --
+-- Índices para tabela `tb_userspasswordsrecoveries`
+--
+ALTER TABLE `tb_userspasswordsrecoveries`
+  ADD PRIMARY KEY (`idrecovery`),
+  ADD KEY `fk_userspasswordsrecoveries_users` (`id_usuario`);
+
+--
 -- Índices para tabela `tb_usuarios`
 --
 ALTER TABLE `tb_usuarios`
@@ -600,10 +631,16 @@ ALTER TABLE `tb_termos`
   MODIFY `id_termos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
+-- AUTO_INCREMENT de tabela `tb_userspasswordsrecoveries`
+--
+ALTER TABLE `tb_userspasswordsrecoveries`
+  MODIFY `idrecovery` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
 -- AUTO_INCREMENT de tabela `tb_usuarios`
 --
 ALTER TABLE `tb_usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- Restrições para despejos de tabelas
@@ -634,6 +671,12 @@ ALTER TABLE `tb_rollouts`
 --
 ALTER TABLE `tb_termos`
   ADD CONSTRAINT `fk_termos_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `tb_usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `tb_userspasswordsrecoveries`
+--
+ALTER TABLE `tb_userspasswordsrecoveries`
+  ADD CONSTRAINT `fk_userspasswordsrecoveries_users` FOREIGN KEY (`id_usuario`) REFERENCES `tb_usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -56,6 +56,110 @@ $app->post('/login', function() {
 	exit;
 
 });
+
+
+//---------ROTA DA PÁGINA RECUPERAR SENHA ----------------------//
+
+$app->get("/recuperar-senha", function() {
+
+	$page = new Page([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("recuperar-senha",[
+		'error'=>usuario::getError(),
+		'profileMsg'=>Usuario::getSuccess()
+
+	]);	
+
+});
+
+
+
+//---------ROTA DA PÁGINA RECUPERAR SENHA  ENVIO DO FORMULÁRIO (POST)----------------------//
+
+$app->post("/recuperar-senha", function(){
+
+	try {
+
+		Usuario::getForgot($_POST["email"]);
+
+	} catch(Exception $e) {
+
+		Usuario::setError($e->getMessage());
+
+		header("Location:/recuperar-senha");
+		exit;
+	}
+
+	Usuario::setSuccess("E-mail de recuperação enviado!
+	Verifique as instruções no seu e-mail.");
+
+	header("Location: /recuperar-senha");
+	exit;
+	
+});
+
+//---------ROTA DA PÁGINA ALTERAR SENHA ----------------------//
+
+$app->get("/resetar-senha", function() {
+
+	$user = Usuario::validForgotDecrypt($_GET["code"]);
+
+	$page = new Page([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("resetar-senha",[
+		'error'=>Usuario::getError(),
+		'profileMsg'=>Usuario::getSuccess(),
+		'name'=>$user["nome_user"],
+		'code'=>$_GET["code"]
+
+	]);	
+
+});
+
+//---------ROTA DA PÁGINA ALTERAR SENHA (POST)----------------------//
+$app->post("/resetar-senha", function(){
+
+	$forgot = Usuario::validForgotDecrypt($_POST["code"]);	
+
+
+	Usuario::setForgotUsed($forgot["idrecovery"]);
+
+	$usuario = new Usuario();
+
+	$usuario->get((int)$forgot["id_usuario"]);
+
+	$senha = Usuario::getPasswordHash($_POST["senha"]);
+
+	$usuario->setPassword($senha);
+
+	Usuario::setSuccess("Senha Alterada com succeso!");
+
+	header("Location: /");
+	exit;
+
+	
+
+});
+//---------ROTA DA PÁGINA DE ERRO AO ALTERAR SENHA----------------------//
+$app->get("/resetar-senha-erro", function() {
+
+	
+	$page = new Page([
+		"header"=>false,
+		"footer"=>false
+	]);
+
+	$page->setTpl("resetar-senha-erro");	
+
+});
+
+
 //---------ROTA DO FORMULÁRIO DE REGISTRO USUÁRIO ----------------------//
 $app->post("/registro", function(){
 

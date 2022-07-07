@@ -59,11 +59,15 @@
 
 
 				<input class="btn" type="submit" name="" value="Acessar"><br><br>
+				<div class="options-01">
+				<label class="remember-me"><input type="checkbox" name="">Lembrar</label>
+				<a href="/recuperar-senha">Recuperar senha</a>
+			</div>
 
 				
 				<div class="options-02">
 					<p>Não é registrado? <a href="#">Crie uma conta</a></p>
-					<p>&copy; Rollouts Systems 2022 Versão 1.2</p>
+					<p>&copy; Rollouts Systems 2022 Versão 1.3</p>
 				</div>
 			</form>
 

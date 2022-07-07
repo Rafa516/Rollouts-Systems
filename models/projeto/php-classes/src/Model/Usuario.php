@@ -5,6 +5,7 @@ namespace Projeto\Model;
 
 use \Projeto\Model;
 use \Projeto\DB\Sql;
+use \Projeto\Mailer;
 
 //Classe Usuario(Usuários, com seus métodos específicos)
 class Usuario extends Model {
@@ -13,6 +14,9 @@ class Usuario extends Model {
 	const ERROR = "UsuarioError";
 	const ERROR_REGISTER = "UsuarioErrorRegister";
 	const SUCCESS = "UsuarioSucesss";
+	const SECRET = "Php7_Secret";
+	const SECRET_IV = "Php7_Secret_IV";
+
 
 	//Método estático para verificação e validação do usuário comum e do administrador
 	public static function login($login, $senha)
@@ -317,7 +321,7 @@ class Usuario extends Model {
 	}
 
 	//PAGINAÇÃO DA PÁGINA  USUÁRIOS
-	public  function getPageUsers($page = 1, $itemsPerPage = 25)
+	public  function getPageUsuarios($page = 1, $itemsPerPage = 25)
 	{
 
 		$start = ($page - 1) * $itemsPerPage;
@@ -841,7 +845,7 @@ public  function getPageTermoRec($page = 1, $itemsPerPage = 25)
 
 //BUSCA DA PÁGINA USUÁRIOS
 
-	public static function getPageSearchUsers($search, $page = 1, $itemsPerPage = 25)
+	public static function getPageSearchUsuarios($search, $page = 1, $itemsPerPage = 25)
 	{
 
 		$start = ($page - 1) * $itemsPerPage;
@@ -950,8 +954,134 @@ public  function getPageTermoRec($page = 1, $itemsPerPage = 25)
 		$_SESSION[Usuario::ERROR_REGISTER] = NULL;
 
 	}
+//Método estático para recuperar senha
+public static function getForgot($email,$inadmin = true)
+	{
+		$sql = new Sql();
+
+		$results = $sql->select("SELECT * FROM  tb_usuarios  WHERE email = :email", 
+			array(
+				":email"=>$email
+
+		));
+
+		if(count($results) === 0)
+		{
+
+		throw new \Exception("E-mail não cadastrado no sistema");
+			
+		}
+		else
+		{
+			$data = $results[0];
+
+			$results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:id_usuario,:desip)",array(
+				":id_usuario"=>$data["id_usuario"],
+				":desip"=>$_SERVER["REMOTE_ADDR"]
+			));
+			
+			if(count($results2) === 0)
+			{
+				throw new \Exception("Não foi possível recuperar a senha.");
+				
+			}
+			else
+			{
+				$dataRecovery = $results2[0];
+
+				$code = openssl_encrypt($dataRecovery['idrecovery'], 'AES-128-CBC', pack("a16", Usuario::SECRET), 0, pack("a16", Usuario::SECRET_IV));
+
+				$code = base64_encode($code);
+		
+
+					$link = "http://rollouts-systems.com.br/resetar-senha?code=$code";
+					
+						
+
+				$mailer = new Mailer($data['email'], $data['nome_user'], "Redefinir sua senha", "forgot", array(
+					"name"=>$data['nome_user'],
+					"link"=>$link
+				));				
+
+				$mailer->send();
+
+				return $link;
+			
+			}
+		}
+	} 
+
+	public static function validForgotDecrypt($code)
+	{
+
+		$code = base64_decode($code);
+
+		$idrecovery = openssl_decrypt($code, 'AES-128-CBC', pack("a16", Usuario::SECRET), 0, pack("a16", Usuario::SECRET_IV));
+
+		$sql = new Sql();
+
+		$results = $sql->select("
+			SELECT *
+			FROM tb_userspasswordsrecoveries a
+			INNER JOIN tb_usuarios b USING(id_usuario)
+			WHERE
+				a.idrecovery = :idrecovery
+				AND
+				a.dtrecovery IS NULL
+				AND
+				DATE_ADD(a.dtregister, INTERVAL 1 HOUR) >= NOW();
+		", array(
+			":idrecovery"=>$idrecovery
+		));
+
+		if (count($results) === 0)
+		{
+
+			header("Location: /resetar-senha-erro");
+			exit;
+
+		}
+		else
+		{
+
+			return $results[0];
+		}
+
+	}
+
+	
+
+
+	public static function setForgotUsed($idrecovery)
+	{
+
+		$sql = new Sql();
+
+		$sql->query("UPDATE tb_userspasswordsrecoveries SET dtrecovery = NOW() WHERE idrecovery = :idrecovery", array(
+			":idrecovery"=>$idrecovery
+		));
+
+	}
+
+
+	
+	public function setPassword($senha)
+	{
+
+		$sql = new Sql();
+
+		$sql->query("UPDATE tb_usuarios SET senha = :senha WHERE id_usuario = :id_usuario", array(
+			":senha"=>$senha,
+			":id_usuario"=>$this->getid_usuario()
+			
+		));
+
+	}
+
 
 
 }
+
+
 
  ?>

@@ -90,6 +90,6 @@
     <a href="/usuario/termos-locais"><i class="fas fa-tasks"></i><span>
         Termos </span></a>
 
-    <a href="/usuario/perfil"><i class="fas fa-info-circle"></i><span>Perfil do Usuário</span></a>
+    <a href="/usuario/perfil"><i class="fas fa-info-circle"></i><span>Perfil do Analista</span></a>
   </div>
   <!--sidebar end-->
