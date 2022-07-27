@@ -321,7 +321,7 @@ class Usuario extends Model {
 	}
 
 	//PAGINAÇÃO DA PÁGINA  USUÁRIOS
-	public  function getPageUsuarios($page = 1, $itemsPerPage = 25)
+	public  function getPageUsers($page = 1, $itemsPerPage = 25)
 	{
 
 		$start = ($page - 1) * $itemsPerPage;
@@ -342,8 +342,37 @@ class Usuario extends Model {
 		];
 
 	}
-
 	
+
+	//BUSCA DA PÁGINA USUÁRIOS
+
+	public static function getPageSearchUsers($search, $page = 1, $itemsPerPage = 25)
+	{
+
+		$start = ($page - 1) * $itemsPerPage;
+
+		$sql = new Sql();
+
+		$results = $sql->select("
+			SELECT SQL_CALC_FOUND_ROWS *
+			FROM tb_usuarios
+			WHERE id_usuario LIKE :search  OR email LIKE :search OR nome_user LIKE :search OR login LIKE :search
+			OR cargo LIKE :search  OR empresa LIKE :search  
+			ORDER BY data_registro DESC
+			LIMIT $start, $itemsPerPage;
+		", [
+			':search'=>'%'.$search.'%'
+		]);
+
+		$resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal;");
+
+		return [
+			'data'=>$results,
+			'total'=>(int)$resultTotal[0]["nrtotal"],
+			'pages'=>ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+		];
+
+	}
 
 	//Método estático para verificar o total de usuários registrados
 	public static function total()

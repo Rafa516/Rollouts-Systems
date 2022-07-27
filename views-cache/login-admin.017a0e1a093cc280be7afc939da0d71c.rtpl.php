@@ -45,7 +45,7 @@
 			<input class="btn" type="submit" name="" value="Acesso Administrativo">
 
 			<div class="options-02">
-				<p>&copy; Rollout ONS 2022 Versão 1.2</p>
+				<p>&copy; Rollout ONS 2022 Versão 1.3</p>
 			</div>
 
 		</form>

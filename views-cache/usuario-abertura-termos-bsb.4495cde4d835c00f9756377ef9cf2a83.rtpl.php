@@ -21,6 +21,10 @@
       </div>
       <?php } ?>
 
+     
+
+
+
       <center><img
           src="https://i0.wp.com/sengepe.org.br/wp-content/uploads/2017/08/captura-de-tela-2017-08-20-acc80s-23-38-34.png"
           width="120" height="120">
@@ -119,7 +123,10 @@
 
 
               <th>
-                <center>Quantidade, Tipo, Modelo, Fabricante, N° de Série, Patrimônio<b>
+                <center>Tipo, Modelo, Fabricante, N° de Série, Patrimônio<b>
+              </th>
+                 <th>
+                <center>Quantidade<b>
               </th>
 
               </tr>
@@ -127,8 +134,18 @@
             <tbody>
 
               <tr>
-                <td> <textarea style="height: 110px;" class="form-control py-1" value="" type="text"
-                    name="equipamentos_t"> </textarea> </td>
+                <td>    <div class="form-group">
+                    <select class="form-control " name="equipamento_1">
+                     
+                        <?php $counter1=-1;  if( isset($equipamentos) && ( is_array($equipamentos) || $equipamentos instanceof Traversable ) && sizeof($equipamentos) ) foreach( $equipamentos as $key1 => $value1 ){ $counter1++; ?>
+                        <option value="<?php echo $value1["Tipo"]; ?> <?php echo $value1["Nome"]; ?> <?php echo $value1["Fabricante"]; ?> <?php echo $value1["Modelo"]; ?> <?php echo $value1["Numero_serie"]; ?> <?php echo $value1["Patrimonio"]; ?>"><?php echo $value1["Tipo"]; ?> <?php echo $value1["Nome"]; ?> <?php echo $value1["Fabricante"]; ?> <?php echo $value1["Modelo"]; ?> <?php echo $value1["Numero_serie"]; ?> <?php echo $value1["Patrimonio"]; ?> Quantidade no Estoque: <?php echo $value1["Quantidade"]; ?></option>
+                         <?php } ?>
+
+
+                    </select>
+                </div>
+       
+                </td> <td> <input name="qtd_1" type="number" class="form-control py-1"></td>
               </tr>
 
 

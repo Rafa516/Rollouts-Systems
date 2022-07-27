@@ -65,6 +65,9 @@
       <a href="/usuario/termos-locais"><i class="fas fa-tasks"></i><span>
           Termos</span></a>
 
+            <a href="/usuario/arquivos"><i class="fas fa-file" ></i><span>
+        Documentos </span></a>
+
       <a href="/usuario/perfil"><i class="fas fa-info-circle"></i><span>Perfil</span></a>
     </div>
   </div>
@@ -89,6 +92,9 @@
 
     <a href="/usuario/termos-locais"><i class="fas fa-tasks"></i><span>
         Termos </span></a>
+
+          <a href="/usuario/documentos-locais"><i class="fas fa-file" ></i><span>
+        Documentos </span></a>
 
     <a href="/usuario/perfil"><i class="fas fa-info-circle"></i><span>Perfil do Analista</span></a>
   </div>

@@ -12,7 +12,6 @@ use \Projeto\Model\Termo;
         $termos = new Termo();
        
         $termos->get((int)$id_termos);
-
      
         $termos->delete();
 
@@ -48,14 +47,15 @@ use \Projeto\Model\Termo;
 
         usuario::verificaLogin();
 
-
+          $termo = new Termo();
 
         $page = new Page();
 
         $page->setTpl("usuario-abertura-termos-bsb",[
             'CallOpenMsg'=>usuario::getSuccess(),
             'errorRegister'=>usuario::getErrorRegister(),
-            
+             "equipamentos"=>$termo->getEstoque(),
+           
 
 
         ]);

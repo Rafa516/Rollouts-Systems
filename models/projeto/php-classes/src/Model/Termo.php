@@ -15,7 +15,7 @@ class Termo extends Model {
 	{
 
 		foreach ($list as &$row) {
-			
+		
 			$p = new Termo();
 			$p->setData($row);
 			$row = $p->getValues();
@@ -232,14 +232,14 @@ public static function totalTermosFinalizado()
 
 		$results = $sql->select("CALL sp_registro_termos(:id_usuario,:termo,:n_chamadoT,:situacao_t,:nome_t,
 		:diretoria_t,:gerencia_t,:gerencia_exeT,
-		:equipamentos_t,:acessorios_t,:observacao_t,
+		:equipamento_1,:qtd_1,:acessorios_t,:observacao_t,
 		:finalidade,:dt_data,:cidade
 	
 		)", array(
 			":id_usuario"=>$this->getid_usuario(),":termo"=>$this->gettermo(),":n_chamadoT"=>$this->getn_chamadoT(),
 			":situacao_t"=>$this->getsituacao_t(),":nome_t"=>$this->getnome_t(),":diretoria_t"=>$this->getdiretoria_t(),
 			":gerencia_t"=>$this->getgerencia_t(),":gerencia_exeT"=>$this->getgerencia_exeT(),
-			":equipamentos_t"=>$this->getequipamentos_t(),":acessorios_t"=>$this->getacessorios_t(),":observacao_t"=>$this->getobservacao_t(),
+			":equipamento_1"=>$this->getequipamento_1(),":qtd_1"=>$this->getqtd_1(),":acessorios_t"=>$this->getacessorios_t(),":observacao_t"=>$this->getobservacao_t(),
 			":finalidade"=>$this->getfinalidade(),":dt_data"=>$this->getdt_data(),":cidade"=>$this->getcidade()
 			
 		));
@@ -257,14 +257,14 @@ public static function totalTermosFinalizado()
 
 		$results = $sql->select("CALL sp_edita_termo(:id_termos,:termo,:n_chamadoT,:situacao_t,:nome_t,
 		:diretoria_t,:gerencia_t,:gerencia_exeT,
-		:equipamentos_t,:acessorios_t,:observacao_t,
+		:equipamento_1,:qtd_1,:observacao_t,
 		:finalidade,:dt_data
 
 		)", array(
 			":id_termos"=>$this->getid_termos(),":termo"=>$this->gettermo(),":n_chamadoT"=>$this->getn_chamadoT(),
 			":situacao_t"=>$this->getsituacao_t(),":nome_t"=>$this->getnome_t(),":diretoria_t"=>$this->getdiretoria_t(),
 			":gerencia_t"=>$this->getgerencia_t(),":gerencia_exeT"=>$this->getgerencia_exeT(),
-			":equipamentos_t"=>$this->getequipamentos_t(),":acessorios_t"=>$this->getacessorios_t(),":observacao_t"=>$this->getobservacao_t(),
+			":equipamento_1"=>$this->getequipamento_1(),":qtd_1"=>$this->getqtd_1(),":acessorios_t"=>$this->getacessorios_t(),":observacao_t"=>$this->getobservacao_t(),
 			":finalidade"=>$this->getfinalidade(),":dt_data"=>$this->getdt_data()
 			
 		));
@@ -355,7 +355,18 @@ public static function totalTermosFinalizado()
 
 	}
 
+
+	public function operacaoEstoque()
+	{
+
+		$sql = new Sql();
+
+		$sql->query("DELETE FROM tb_termos WHERE id_termos = :id_termos", [
+			':id_termos'=>$this->getid_termos()
+		]);
 	
+
+	}
 	
 //METODO PARA DELETAR UM TERMO
 	public function delete()
@@ -787,5 +798,7 @@ public function deletarArquivo($id_arquivoT)
 
 
 	}
+
+	
 
 }

@@ -6,7 +6,7 @@
 ## Descrição
 
 - **Sistema de gerenciamento e controle dos termos e rollouts realizados para o Operador Nacional do Sistema Elétrico ONS**
-    >Projeto densenvolvido para falicitar o gerenciamento e controle dos dados e arquivos gerados após cada finalização de termos e rollouts, visto que há uma alta demanda dessas funções, atualmente na versão 1.3.
+    >Projeto densenvolvido para falicitar o gerenciamento e controle dos dados e arquivos gerados após cada finalização de termos e rollouts, visto que há uma alta demanda dessas funções, atualmente na versão 1.4.
 
 ## Tecnologias
 - **Desenvolvimento**

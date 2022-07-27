@@ -1,7 +1,7 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><footer class="footer">
 
   <br>
-  <center><strong>&copy; Rollouts Systems 2022 Versão 1.2</strong></center>
+  <center><strong>&copy; Rollouts Systems 2022 Versão 1.3</strong></center>
 </footer>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

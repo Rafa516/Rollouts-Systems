@@ -91,7 +91,7 @@
 
                     <tr>
                       <td> <textarea disabled style="height: 110px; color: black"
-                          class="form-control py-1"><?php echo $value["equipamentos_t"]; ?></textarea> </td>
+                          class="form-control py-1"><?php echo $value["qtd_1"]; ?> - <?php echo $value["equipamento_1"]; ?> </textarea> </td>
                     </tr>
 
 

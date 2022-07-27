@@ -117,6 +117,8 @@
                   <b><?php echo numArquivosTermos($value1["id_termos"]); ?> Arquivos</b></a>
                   <?php } ?>
 
+                  
+
                   <?php if( $value1["situacao_t"] == '' OR $value1["situacao_t"] == 'Pendente'  ){ ?>
 
               <td><br>

@@ -67,7 +67,7 @@
 				
 				<div class="options-02">
 					<p>Não é registrado? <a href="#">Crie uma conta</a></p>
-					<p>&copy; Rollouts Systems 2022 Versão 1.3</p>
+					<p>&copy; Rollouts Systems 2022 Versão 1.4</p>
 				</div>
 			</form>
 

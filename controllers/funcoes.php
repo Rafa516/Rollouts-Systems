@@ -3,6 +3,7 @@
 use \Projeto\Model\Usuario;
 use \Projeto\Model\Rollout;
 use \Projeto\Model\Termo;
+use \Projeto\Model\Documento;
 
 
 
@@ -295,7 +296,50 @@ use \Projeto\Model\Termo;
 	   	return  $total['arquivos'];
 
 	}
+	//----------------TOTAL DE DOCUMENTOS DE CADA CIDADE-------------------------//
+	function totalDocumentosBsb(){
+
+		$total = Documento::totalDocumentosBsb();
 	
+
+	   return  $total['documentosTotalBsb'];
+
+	}
+
+	function totalDocumentosRj(){
+
+		$total = Documento::totalDocumentosRj();
+	
+
+	   return  $total['documentosTotalRj'];
+
+	}
+
+	function totalDocumentosRec(){
+
+		$total = Documento::totalDocumentosRec();
+	
+
+	   return  $total['documentosTotalRec'];
+
+	}
+
+	function totalDocumentosFlr(){
+
+		$total = Documento::totalDocumentosFlr();
+	
+
+	   return  $total['documentosTotalFlr'];
+
+	}
+
+	function numArquivosDocumentos($id_documento){
+
+		$total = Documento::numArquivosDocumentos($id_documento);
+
+	   	return  $total['arquivos'];
+
+	}
 	
 
 
